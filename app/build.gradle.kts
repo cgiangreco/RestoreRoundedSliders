@@ -8,8 +8,8 @@ android {
         applicationId = "dev.restoreroundedsliders"
         minSdk = 35
         targetSdk = 36
-        versionCode = 5
-        versionName = "0.3.0-alpha"
+        versionCode = 6
+        versionName = "1.0"
     }
 }
 

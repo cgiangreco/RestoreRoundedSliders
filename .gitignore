@@ -2,6 +2,8 @@
 .gradle/
 build/
 app/build/
+app/release/
+app/debug/
 
 # Local Android SDK path
 local.properties
