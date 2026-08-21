@@ -3646,9 +3646,11 @@ public final class HookEntry implements IXposedHookLoadPackage {
                                      * manually; Orientation handles that.
                                      */
                                     float activeHeight =
-                                            Math.max(
-                                                    nativeWidth,
-                                                    canvasHeight * f);
+                                            ctx.roundness >= 100
+                                                    ? Math.max(
+                                                            nativeWidth,
+                                                            canvasHeight * f)
+                                                    : canvasHeight * f;
 
                                     activeHeight =
                                             Math.min(
@@ -3743,9 +3745,11 @@ public final class HookEntry implements IXposedHookLoadPackage {
                                 }
 
                                 float activeWidth =
-                                        Math.max(
-                                                nativeHeight,
-                                                canvasWidth * f);
+                                        ctx.roundness >= 100
+                                                ? Math.max(
+                                                        nativeHeight,
+                                                        canvasWidth * f)
+                                                : canvasWidth * f;
 
                                 activeWidth =
                                         Math.max(
