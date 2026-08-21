@@ -3494,7 +3494,8 @@ public final class HookEntry implements IXposedHookLoadPackage {
                                     param.args[startRadiusIndex] = endpointRadius;
                                     param.args[endRadiusIndex] = endpointRadius;
 
-                                    if (knownActiveColor != null) {
+                                    if (knownActiveColor != null
+                                            && ctx.roundness >= 100) {
                                         V84_DRAW_ZERO_CIRCLE.set(ctx.sliderName);
                                     } else {
                                         V84_DRAW_ZERO_CIRCLE.remove();
@@ -3697,7 +3698,8 @@ public final class HookEntry implements IXposedHookLoadPackage {
                                     param.args[startRadiusIndex] = radius;
                                     param.args[endRadiusIndex] = radius;
 
-                                    if (rawF <= 0.0005f
+                                    if (ctx.roundness >= 100
+                                            && rawF <= 0.0005f
                                             && volumeV80ActiveTrackColor != null) {
                                         V84_DRAW_ZERO_CIRCLE.set("volume");
                                     } else {
@@ -4405,14 +4407,16 @@ public final class HookEntry implements IXposedHookLoadPackage {
                          * existing behavior unchanged.
                          */
                         float visualFraction =
-                                "volume".equals(roundedSliderName)
-                                        && !showGrabber
-                                        ? ClassicDrawContext
-                                                .volumeProgressiveVisualFraction(
-                                                        rawFraction)
-                                        : ClassicDrawContext
-                                                .visualFraction(
-                                                        rawFraction);
+                                roundness >= 100
+                                        ? ("volume".equals(roundedSliderName)
+                                                && !showGrabber
+                                                ? ClassicDrawContext
+                                                        .volumeProgressiveVisualFraction(
+                                                                rawFraction)
+                                                : ClassicDrawContext
+                                                        .visualFraction(
+                                                                rawFraction))
+                                        : clamp01(rawFraction);
 
                         boolean minimumClamped =
                                 visualFraction > rawFraction + 0.0005f;
@@ -4576,6 +4580,7 @@ public final class HookEntry implements IXposedHookLoadPackage {
         private static final java.util.Map<Object, float[]> GEOMETRY =
                 java.util.Collections.synchronizedMap(
                         new java.util.WeakHashMap<>());
+
 
         static void begin(float fraction, int roundness, String sliderName) {
             State previous = TLS.get();
