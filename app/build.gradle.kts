@@ -1,11 +1,11 @@
 plugins { id("com.android.application") }
 
 android {
-    namespace = "dev.restoreroundedsliders"
+    namespace = "io.github.cgiangreco.restoreroundedsliders"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "dev.restoreroundedsliders"
+        applicationId = "io.github.cgiangreco.restoreroundedsliders"
         minSdk = 35
         targetSdk = 36
         versionCode = 6

@@ -1,4 +1,4 @@
-package dev.restoreroundedsliders;
+package io.github.cgiangreco.restoreroundedsliders;
 
 import android.app.Activity;
 import android.graphics.Color;
