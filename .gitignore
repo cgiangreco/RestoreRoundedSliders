@@ -24,3 +24,6 @@ key.properties
 # OS junk
 .DS_Store
 Thumbs.db
+
+# any APKs
+*.apk
