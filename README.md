@@ -145,7 +145,7 @@ adb shell su -c 'killall com.android.systemui'
 ## Package
 
 ```text
-dev.restoreroundedsliders
+io.github.cgiangreco.restoreroundedsliders
 ```
 
 ## Contributing
