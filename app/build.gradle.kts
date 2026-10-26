@@ -8,8 +8,8 @@ android {
         applicationId = "io.github.cgiangreco.restoreroundedsliders"
         minSdk = 35
         targetSdk = 36
-        versionCode = 7
-        versionName = "1.1"
+        versionCode = 8
+        versionName = "1.2"
     }
 }
 
