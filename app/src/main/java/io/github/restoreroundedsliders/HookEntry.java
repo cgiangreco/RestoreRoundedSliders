@@ -59,6 +59,12 @@ public final class HookEntry implements IXposedHookLoadPackage {
         if (!SYSTEM_UI.equals(lpparam.packageName)) return;
 
         try {
+            StatusBarBrightness.install(lpparam.classLoader);
+        } catch (Throwable t) {
+            log("Status bar brightness gesture unavailable", t);
+        }
+
+        try {
             installSharedSliderHooks(lpparam.classLoader);
         } catch (Throwable t) {
             log("Shared slider hooks unavailable; continuing with direct hooks", t);

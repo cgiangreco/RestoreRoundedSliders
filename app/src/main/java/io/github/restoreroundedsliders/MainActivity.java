@@ -7,6 +7,7 @@ import android.provider.Settings;
 import android.view.View;
 import android.view.WindowInsets;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ public final class MainActivity extends Activity {
 
     private SeekBar brightnessRoundness;
     private Switch brightnessGrabber;
+    private CheckBox statusBarBrightness;
     private TextView brightnessRoundnessValue;
 
     private SeekBar volumeRoundness;
@@ -74,6 +76,9 @@ public final class MainActivity extends Activity {
 
         brightnessRoundness = findViewById(R.id.brightness_roundness);
         brightnessGrabber = findViewById(R.id.brightness_grabber);
+        statusBarBrightness = findViewById(R.id.status_bar_brightness);
+        statusBarBrightness.setButtonTintList(
+                android.content.res.ColorStateList.valueOf(getColor(R.color.accent)));
         brightnessRoundnessValue = findViewById(R.id.brightness_roundness_value);
 
         volumeRoundness = findViewById(R.id.volume_roundness);
@@ -206,6 +211,7 @@ public final class MainActivity extends Activity {
     }
 
     private void loadSettings() {
+        statusBarBrightness.setChecked(readGlobal(StatusBarBrightness.SETTING, 0) != 0);
         setSeekValue(
                 brightnessRoundness,
                 brightnessRoundnessValue,
@@ -236,6 +242,7 @@ public final class MainActivity extends Activity {
     }
 
     private void applySettings() {
+        int sb = statusBarBrightness.isChecked() ? 1 : 0;
         int br = brightnessRoundness.getProgress();
         int bg = brightnessGrabber.isChecked() ? 1 : 0;
         int vr = volumeRoundness.getProgress();
@@ -243,6 +250,7 @@ public final class MainActivity extends Activity {
 
         String command =
                 // Explicitly reset legacy thickness values; the hook also hard-locks 100%.
+                "settings put global " + StatusBarBrightness.SETTING + " " + sb + "; " +
                 "settings put global " + PREFIX + "brightness_thickness 100; " +
                 "settings put global " + PREFIX + "volume_thickness 100; " +
                 "settings put global " + PREFIX + "brightness_roundness " + br + "; " +
@@ -257,6 +265,7 @@ public final class MainActivity extends Activity {
     }
 
     private void restoreDefaults() {
+        statusBarBrightness.setChecked(false);
         setSeekValue(brightnessRoundness, brightnessRoundnessValue, 100);
         brightnessGrabber.setChecked(false);
 

@@ -160,6 +160,21 @@
                     android:text="Show grabber"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp" />
+                <CheckBox
+                    android:id="@+id/status_bar_brightness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="52dp"
+                    android:text="Slide across status bar to adjust brightness"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Swipe left to dim, right to brighten. Swipe down normally to open notifications."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <LinearLayout

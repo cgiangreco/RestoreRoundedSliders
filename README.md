@@ -42,6 +42,7 @@ By default, the following configuration is applied to restore classic rounded sl
 
 - Brightness roundness: **100%**
 - Brightness grabber: **OFF**
+- Status bar brightness gesture: **OFF**
 - Volume roundness: **100%**
 - Volume grabber: **OFF**
 
@@ -49,9 +50,15 @@ These settings can be adjusted individually in the App to change the appearance.
 
 Applying settings automatically restarts SystemUI.
 
+Optional feature: **Slide across status bar to adjust brightness**, enabled via a checkbox in the app (off by default).
+
 ## Compatibility
 
-As of now, **this module has only been tested on a Google Pixel 9 Pro with Android 17 (build CP2A.260805.005)**, but it should work on all Pixel devices with Android 17. 
+This module has been tested on:
+ - **Google Pixel 9 Pro with Android 17** (builds CP2A.260805.005 & CP3A.261005.005).
+ - **Google Pixel 8 Pro with Android 17 CalyxOS** (Thanks [@RealFakeGitter](https://github.com/RealFakeGitter) 😉).
+
+It should work on other Pixel devices with Android 17, though compatibility depends on the SystemUI build.
 
 It has not been tested with Android 16 (which has the same slider style) yet, so I can't say for sure if it is compatible with it or not.
 
@@ -97,6 +104,26 @@ Instead of replacing the entire SystemUI component, it modifies the relevant sli
 - volume behavior
 
 while changing the visual track shape.
+
+The optional status-bar brightness gesture uses a separate touch hook. On Android 17,
+touches are handled at the status-bar window before reaching `PhoneStatusBarView`.
+The module hooks `ViewGroup.dispatchTouchEvent`, which `StatusBarWindowView`
+inherits, and filters calls to that SystemUI window only.
+
+The hook waits for a horizontal swipe before taking over and cancelling the stock
+touch sequence. Taps leave brightness unchanged, and vertical swipes retain the
+normal notification-shade behavior. Once active, the gesture maps the finger’s
+horizontal position to Android’s perceptual brightness scale using
+`BrightnessUtils.convertGammaToLinear`: the left edge corresponds to 0%, the
+center to 50%, and the right edge to 100%, within the display’s reported brightness
+limits.
+
+`DisplayManager.setTemporaryBrightness` previews changes during the swipe.
+Releasing the finger saves the level with `setBrightness` and clears the temporary
+override; cancellation or adding a second finger discards the preview. Adaptive
+brightness is left in its existing mode, so Android may subsequently readjust the
+level. The gesture depends on SystemUI internals, so compatibility can vary between
+Android builds independently of the slider appearance hooks.
 
 The project currently uses the **legacy Xposed API** via a bundled Xposed API 82 JAR (`api-82.jar`, SHA-256: `f48c635f1c7469fdec0e00ad2ea0b7a6b2f5b55065784a35b7ca3a84615e8e25`) for compilation and includes an `assets/xposed_init` entry point.
 
